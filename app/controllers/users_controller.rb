@@ -1,36 +1,33 @@
 class UsersController < ApplicationController
-
   def index
-    matching_users = User.all
-    @users = matching_users.order(:created_at)
-
-    render({ :template => "users_templates/all_users"})
+    @users = User.all
   end
-  
+
   def show
-    username = params.fetch("username")
-    matching_users = User.where({ :username => username })
-    @user = matching_users.at(0)
-
-    render({ :template => "user_templates/user_details"})
+    @user = User.find_by(username: params[:username])
   end
-  
+
   def create
-    user = User.new
-    user.username = params.fetch("query_username")
-    user.save
-    
-    redirect_to("/users/#{user.username}")
-  end
-  
-  def update
-    user_id = params.fetch("user_id")
-    matching_users = User.where({ :id => user_id })
-    the_user = matching_users.at(0)
-    
-    the_user.username = params.fetch("query_username")
-    the_user.save
-    redirect_to("/users/#{user.username}")
+    @user = User.new(user_params)
+    if @user.save
+      redirect_to user_path(@user.username)
+    else
+      render :index
+    end
   end
 
+  def update
+    @user = User.find_by(username: params[:username])
+    if @user.update(user_params)
+      redirect_to user_path(@user.username)
+    else
+      render :show
+    end
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:username)
+  end
 end

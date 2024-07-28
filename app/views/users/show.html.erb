@@ -1,0 +1,14 @@
+<h1><%= @user.username %></h1>
+<form action="/users/<%= @user.username %>" method="post">
+  <%= csrf_meta_tags %>
+  <input type="hidden" name="_method" value="patch">
+  <label for="username">Username</label>
+  <input type="text" id="username" name="user[username]" value="<%= @user.username %>">
+  <button type="submit">Update User</button>
+</form>
+<h2>Commented Venues</h2>
+<ul>
+  <% @user.commented_venues.each do |venue| %>
+    <li><%= link_to venue.name, venue_path(venue) %></li>
+  <% end %>
+</ul>

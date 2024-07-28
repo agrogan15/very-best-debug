@@ -1,0 +1,21 @@
+<h1><%= @venue.name %></h1>
+<p>Address: <%= @venue.address %></p>
+<p>Neighborhood: <%= @venue.neighborhood %></p>
+
+<h2>Edit Venue</h2>
+<form action="/venues/<%= @venue.id %>" method="post">
+  <%= csrf_meta_tags %>
+  <input type="hidden" name="_method" value="patch">
+  
+  <label for="name">Name</label>
+  <input type="text" id="name" name="venue[name]" value="<%= @venue.name %>">
+  
+  <label for="address">Address</label>
+  <input type="text" id="address" name="venue[address]" value="<%= @venue.address %>">
+  
+  <label for="neighborhood">Neighborhood</label>
+  <input type="text" id="neighborhood" name="venue[neighborhood]" value="<%= @venue.neighborhood %>">
+  
+  <button type="submit">Update Venue</button>
+</form>
+<%= link_to 'Delete Venue', venue_path(@venue), method: :delete, data: { confirm: 'Are you sure?' } %>
